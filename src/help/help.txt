@@ -1,0 +1,3 @@
+My prefix is !
+Commands:
+Chess @someone to play chess
