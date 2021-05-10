@@ -38,6 +38,8 @@ client.on("message", function (message) {
     }
     
     else if (command === 'chess') {
+        const challanger = message.author
+        const duelist = message.mentions.members.first()
         var count = 0
         var turn = [""]
         var f = "a\t b\t c\t d\t e\t f\t g\t h \n" 
@@ -54,8 +56,10 @@ client.on("message", function (message) {
             12,12,12,12,12,12,12,12,
             13,14,15,17,16,15,14,13,]
 
-            round(field)
-        function round (field) {
+            round(field,challanger,duelist)
+        function round (field,challanger,duelist) {
+
+
         field.forEach(element => {
             
             if (count == 8 ) {
@@ -84,48 +88,59 @@ client.on("message", function (message) {
             client.on('message', message => {
                 if (message.author.bot) return;
                 if (message.content != "") {
+                    if (message.author.id == challanger.id)
                     turn = message.content.split(" ")
-                    console.log(turn)
-                    row =turn[0].slice(0,1) 
-                    number =  turn[0].slice(1,2)
-                    switch (row) {
-                        case'a':
-                            index = number * 1 -1
-                            return
-                        case'b':
-                            index = number * 2 -1
-                            return
-                        case 'c':
-                            index = number * 3 -1
-                            return
-                        case 'd':
-                            index = number * 4 -1
-                            return
-                        case 'e':
-                            index = number * 5 -1
-                            return
-                        case 'f':
-                            index = number * 6 -1
-                            return
-                        case 'g':
-                            index = number * 7 -1
-                            return
-                        case 'h':
-                            index = number * 8 -1
-                            return
-                    
+                    function fieldchooser(row,number){
+                        index = 0
+
+                        console.log (row)
+                        switch (row) {
+                            case'a':
+                                index = number * 8 + 1  -9
+                                break
+                            case'b':
+                                index = number * 8 + 2 -9
+                                break
+                            case 'c':
+                                index = number * 8 + 3 -9
+                                break
+                            case 'd':
+                                index = number * 8 + 4 -9
+                                break
+                            case 'e':
+                                index = number * 8 + 5 -9
+                                break
+                            case 'f':
+                                index = number * 8 + 6 -9
+                                break
+                            case 'g':
+                                index = number * 8 + 7 -9
+                                break
+                            case 'h':
+                                index = number * 8 + 8 -9
+                                break
+                        }
+                       return index
                     }
-                    console.log (number, row)
-                    console.log(index)
-                   return
+                    rowc =turn[0].slice(0,1) 
+                    numberc =  turn[0].slice(1,2)
+                    current = fieldchooser(rowc,numberc)
+
+                    rowf =turn[1].slice(0,1) 
+                    numberf =  turn[1].slice(1,2)
+                    fture = fieldchooser(rowf,numberf)
+
+                    console.log(current,fture)
+                    field[fture] = field[current]
+                    console.log(field)
+                   
                 }
             });
         }catch(err) {
             console.log(err)
         }
-        
-        message.channel.send(f)
     }
+    message.channel.send(f)
     }
 })
 
