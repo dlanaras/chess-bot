@@ -7,36 +7,73 @@ const https = require('https');
 const readline = require('readline');
 const prefix = "!";
 
-function show(field) {
-    var count = 0
-    var f = "a\t b\t c\t d\t e\t f\t g\t h \n"
-    let formatedChessField = "";
+const wk = "<:kingw:841224208972513320>";
+const bk = "<:kingb:841224209086152704>";
+const wq = "<:queenw:841224234457628712>";
+const bq = "<:queenb:841224234420142080>";
+const wr = "<:rookw:841224234315284491>";
+const br = "<:rookb:841224234444652574>";
+const wb = "<:bishopw:841224183492509696>";
+const bb = "<:bishopb:841223730272403456>";
+const wn = "<:kinghtw:841224209069375509>";
+const bn = "<:knightb:841224208587292713>";
+const wp = "<:pawnw:841224234508484608>";
+const bp = "<:pawnb:841224234289725470>";
+const w = ":white_large_square:";
+const b = ":black_large_square:";
+let field = [
+    [wr,wn,wb,wk,wq,wb,wn,wr],
+    [wp,wp,wp,wp,wp,wp,wp,wp],
+    [w, b, w, b, w, b, w, b],
+    [b, w, b, w, b, w, b, w],
+    [w, b, w, b, w, b, w, b],
+    [b, w, b, w, b, w, b, w],
+    [bp,bp,bp,bp,bp,bp,bp,bp],
+    [br,bn,bb,bq,bk,bb,bn,br]
+];
+function show () {
+    let formatedfield = "";
+
+    field.forEach(value => {
+        formatedfield += "\n";
+        console.log("maybe")
+        value.forEach(element => {
+            formatedfield += element;
+        })
+    });
+    return formatedfield;
+}/*
+
+
     field.forEach(element => {
-       
+    
         
         if (count == 8) {
-            formatedChessField += "\n" 
+            formatedfield += "\n" 
             count = 0
         }
-        if (element == 8) { formatedChessField += ":white_large_square:" }
-        else if (element == 2) { formatedChessField += "<:pawnw:841224234508484608>" }
-        else if (element == 3) { formatedChessField += "<:rookw:841224234315284491>" }
-        else if (element == 4) { formatedChessField += "<:kinghtw:841224209069375509>" }
-        else if (element == 5) { formatedChessField += "<:bishopw:841224183492509696>" }
-        else if (element == 6) { formatedChessField += "<:queenw:841224234457628712>" }
-        else if (element == 7) { formatedChessField += "<:kingw:841224208972513320>" }
-        else if (element == 1) { formatedChessField += ":black_large_square:" }
-        else if (element == 12) { formatedChessField += "<:pawnb:841224234289725470>" }
-        else if (element == 13) { formatedChessField += "<:rookb:841224234444652574>" }
-        else if (element == 14) { formatedChessField += "<:knightb:841224208587292713>" }
-        else if (element == 15) { formatedChessField += "<:bishopb:841223730272403456>" }
-        else if (element == 16) { formatedChessField += "<:queenb:841224234420142080>" }
-        else if (element == 17) { formatedChessField += "<:kingb:841224209086152704>" }
-
+        
+        if (element == 8) { formatedfield += ":w_large_square:" }
+        else if (element == 2) { formatedfield += "<:pawnw:841224234508484608>" }
+        else if (element == 3) { formatedfield += "<:rookw:841224234315284491>" }
+        else if (element == 4) { formatedfield += "<:kinghtw:841224209069375509>" }
+        else if (element == 5) { formatedfield += "<:bishopw:841224183492509696>" }
+        else if (element == 6) { formatedfield += "<:queenw:841224234457628712>" }
+        else if (element == 7) { formatedfield += "<:kingw:841224208972513320>" }
+        else if (element == 1) { formatedfield += ":b_large_square:" }
+        else if (element == 12) { formatedfield += "<:pawnb:841224234289725470>" }
+        else if (element == 13) { formatedfield += "<:rookb:841224234444652574>" }
+        else if (element == 14) { formatedfield += "<:knightb:841224208587292713>" }
+        else if (element == 15) { formatedfield += "<:bishopb:841223730272403456>" }
+        else if (element == 16) { formatedfield += "<:queenb:841224234420142080>" }
+        else if (element == 17) { formatedfield += "<:kingb:841224209086152704>" }
+        
         count += 1
     });
-    return formatedChessField
-}
+    return formatedfield
+    */
+
+
 client.on("message", function (message) {
 
     client.user.setActivity("with cooom", {
@@ -72,7 +109,7 @@ client.on("message", function (message) {
         const duelist = message.mentions.members.first()
 
         var turn = [""]
-        // 1 = black 0 = white
+        // 1 = b 0 = w
         var field = [
             3, 4, 5, 6, 7, 5, 4, 3,
             2, 2, 2, 2, 2, 2, 2, 2,
@@ -85,7 +122,7 @@ client.on("message", function (message) {
 
         round(field, challenger, duelist)
         function round(field, challenger, duelist) {
-            message.channel.send(show(field))
+            message.channel.send(show())
             
             try {
                 client.on('message', message => {
@@ -141,7 +178,7 @@ client.on("message", function (message) {
                         else {
                             field[futurefield] = field[currentfield]
                         }
-                        message.channel.send(show(field))
+                        message.channel.send(show())
                     }
                 });
             } catch (err) {
@@ -152,6 +189,9 @@ client.on("message", function (message) {
     }
 })
 
-// rook: can move in cross ()
+// TODO: knight: can move in L or in cappital Gamma (Γ)
+// + 10/6 - 10/6   + 15/17 -15/17
+// dishop: can move in diagonal() + 9/7 - 9/7
+// rook: can move in cross() +8,16,24,32,40,48,56,64  +1,2,3,4,5,6,7,8 -1,2,3,4,5,6,7,8 -8,16,24,32,40,48,56,64
 
 client.login(config.BOT_TOKEN);
