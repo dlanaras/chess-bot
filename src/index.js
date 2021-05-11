@@ -31,7 +31,7 @@ let field = [
     [bp,bp,bp,bp,bp,bp,bp,bp],
     [br,bn,bb,bq,bk,bb,bn,br]
 ];
-function show () {
+function getFormatedField() {
     let formatedfield = "";
 
     field.forEach(value => {
@@ -42,43 +42,12 @@ function show () {
         })
     });
     return formatedfield;
-}/*
-
-
-    field.forEach(element => {
-    
-        
-        if (count == 8) {
-            formatedfield += "\n" 
-            count = 0
-        }
-        
-        if (element == 8) { formatedfield += ":w_large_square:" }
-        else if (element == 2) { formatedfield += "<:pawnw:841224234508484608>" }
-        else if (element == 3) { formatedfield += "<:rookw:841224234315284491>" }
-        else if (element == 4) { formatedfield += "<:kinghtw:841224209069375509>" }
-        else if (element == 5) { formatedfield += "<:bishopw:841224183492509696>" }
-        else if (element == 6) { formatedfield += "<:queenw:841224234457628712>" }
-        else if (element == 7) { formatedfield += "<:kingw:841224208972513320>" }
-        else if (element == 1) { formatedfield += ":b_large_square:" }
-        else if (element == 12) { formatedfield += "<:pawnb:841224234289725470>" }
-        else if (element == 13) { formatedfield += "<:rookb:841224234444652574>" }
-        else if (element == 14) { formatedfield += "<:knightb:841224208587292713>" }
-        else if (element == 15) { formatedfield += "<:bishopb:841223730272403456>" }
-        else if (element == 16) { formatedfield += "<:queenb:841224234420142080>" }
-        else if (element == 17) { formatedfield += "<:kingb:841224209086152704>" }
-        
-        count += 1
-    });
-    return formatedfield
-    */
-
-
+}
 client.on("message", function (message) {
 
-    client.user.setActivity("with cooom", {
+    client.user.setActivity("with big pp", {
         type: "STREAMING",
-        url: "https://github.com/YvesHuber/discord-bot"
+        url: "https://github.com/YvesHuber/chess-bot"
     });
     if (message.author.bot) return;
     if (!message.content.startsWith(prefix)) return;
@@ -108,63 +77,66 @@ client.on("message", function (message) {
         const challenger = message.author
         const duelist = message.mentions.members.first()
 
-        var turn = [""]
-        // 1 = b 0 = w
-        var field = [
-            3, 4, 5, 6, 7, 5, 4, 3,
-            2, 2, 2, 2, 2, 2, 2, 2,
-            8, 1, 8, 1, 8, 1, 8, 1,
-            1, 8, 1, 8, 1, 8, 1, 8,
-            8, 1, 8, 1, 8, 1, 8, 1,
-            1, 8, 1, 8, 1, 8, 1, 8,
-            12, 12, 12, 12, 12, 12, 12, 12,
-            13, 14, 15, 17, 16, 15, 14, 13,]
+
 
         round(field, challenger, duelist)
         function round(field, challenger, duelist) {
-            message.channel.send(show())
+            message.channel.send(getFormatedField())
             
             try {
                 client.on('message', message => {
                     if (message.author.bot) return;
                     if (message.content != "") {
                         if (message.author.id == challenger.id)
-                            turn = message.content.split(" ")
+                        turn = message.content.split(" ")
+                        currentrow = turn[0].slice(0, 1) 
+                        currentnum = turn[0].slice(1, 2)
+                        futuretrow = turn[1].slice(0, 1) 
+                        futurenum = turn[1].slice(1, 2)
                         function fieldchooser(row, number) {
                             index = 0
                             //dabaddby
                             console.log(row)
                             switch (row) {
                                 case 'a':
+                                    // field[y][0]
+                                    field = 
                                     index = number * 8 + 1 - 9
                                     break
                                 case 'b':
+                                    // field[y][1]
                                     index = number * 8 + 2 - 9
                                     break
                                 case 'c':
+                                    // field[y][2]
                                     index = number * 8 + 3 - 9
                                     break
                                 case 'd':
+                                    // field[y][3]
                                     index = number * 8 + 4 - 9
                                     break
                                 case 'e':
+                                    // field[y][4]
                                     index = number * 8 + 5 - 9
                                     break
                                 case 'f':
+                                    //field[y][5]
                                     index = number * 8 + 6 - 9
                                     break
                                 case 'g':
+                                    // field[y][6]
                                     index = number * 8 + 7 - 9
                                     break
                                 case 'h':
+                                    // field[y][7]
                                     index = number * 8 + 8 - 9
                                     break
                             }
 
                             return index
                         }
-                        currentfield = fieldchooser(turn[0].slice(0, 1), turn[0].slice(1, 2))
-                        futurefield = fieldchooser(turn[1].slice(0, 1), turn[1].slice(1, 2))
+                        currentfield = fieldchooser()
+                        futurefield = fieldchooser()
                         console.log("current Index", currentfield , "future Index", futurefield)
                         console.log("currentfield Value" , field[currentfield],"futurefireld Value" ,field[futurefield])
                         console.log(typeof(field[currentfield] , 8))
@@ -178,7 +150,7 @@ client.on("message", function (message) {
                         else {
                             field[futurefield] = field[currentfield]
                         }
-                        message.channel.send(show())
+                        message.channel.send(getFormatedField())
                     }
                 });
             } catch (err) {
