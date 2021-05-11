@@ -6,7 +6,7 @@ const fs = require('fs')
 const https = require('https');
 const readline = require('readline');
 const prefix = "!";
-
+//Figures
 const wk = "<:kingw:841224208972513320>";
 const bk = "<:kingb:841224209086152704>";
 const wq = "<:queenw:841224234457628712>";
@@ -21,6 +21,7 @@ const wp = "<:pawnw:841224234508484608>";
 const bp = "<:pawnb:841224234289725470>";
 const w = ":white_large_square:";
 const b = ":black_large_square:";
+//Fields 
 let field = [
     [wr,wn,wb,wk,wq,wb,wn,wr],
     [wp,wp,wp,wp,wp,wp,wp,wp],
@@ -31,6 +32,7 @@ let field = [
     [bp,bp,bp,bp,bp,bp,bp,bp],
     [br,bn,bb,bq,bk,bb,bn,br]
 ];
+//makes field
 function getFormatedField() {
     let formatedfield = "";
 
@@ -78,7 +80,7 @@ client.on("message", function (message) {
         const duelist = message.mentions.members.first()
 
 
-
+        
         round(field, challenger, duelist)
         function round(field, challenger, duelist) {
             message.channel.send(getFormatedField())
@@ -89,75 +91,90 @@ client.on("message", function (message) {
                     if (message.content != "") {
                         if (message.author.id == challenger.id)
                         turn = message.content.split(" ")
-                        currentrow = turn[0].slice(0, 1) 
-                        currentnum = turn[0].slice(1, 2)
-                        futuretrow = turn[1].slice(0, 1) 
-                        futurenum = turn[1].slice(1, 2)
+                        
                         function fieldchooser(row, number) {
+                            let currentPos = new Object();
                             index = 0
                             //dabaddby
                             console.log(row)
                             switch (row) {
                                 case 'a':
                                     // field[y][0]
-                                    field = 
-                                    index = number * 8 + 1 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 0;
+                                    return currentPos;
                                 case 'b':
                                     // field[y][1]
-                                    index = number * 8 + 2 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 1;
+                                    return currentPos;
                                 case 'c':
                                     // field[y][2]
-                                    index = number * 8 + 3 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 2;
+                                    return currentPos;
                                 case 'd':
                                     // field[y][3]
-                                    index = number * 8 + 4 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 3;
+                                    return currentPos;
                                 case 'e':
                                     // field[y][4]
-                                    index = number * 8 + 5 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 4;
+                                    return currentPos;
                                 case 'f':
                                     //field[y][5]
-                                    index = number * 8 + 6 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 5;
+                                    return currentPos; 
                                 case 'g':
                                     // field[y][6]
-                                    index = number * 8 + 7 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 6;
+                                    return currentPos; 
                                 case 'h':
                                     // field[y][7]
-                                    index = number * 8 + 8 - 9
-                                    break
+                                    currentPos[0] = number -1;
+                                    currentPos[1] = 7;
+                                    return currentPos;
                             }
-
-                            return index
                         }
-                        currentfield = fieldchooser()
-                        futurefield = fieldchooser()
+                        try {
+                        currentrow = turn[0].slice(0, 1) 
+                        currentnum = turn[0].slice(1, 2)
+                        futuretrow = turn[1].slice(0, 1) 
+                        futurenum = turn[1].slice(1, 2)
+                        }
+                        catch (err) {
+                            message.channel.send("Please only enter in this format <b1 b2>")
+                            return
+                        }
+                        currentfield = fieldchooser(currentrow, currentnum)
+                        futurefield = fieldchooser(futuretrow,futurenum)
                         console.log("current Index", currentfield , "future Index", futurefield)
-                        console.log("currentfield Value" , field[currentfield],"futurefireld Value" ,field[futurefield])
+                        //console.log("currentfield Value" , field[currentfield],"futurefireld Value" ,field[futurefield])
                         console.log(typeof(field[currentfield] , 8))
-                        if (field[currentfield] == 1 || field[currentfield] == 8) {
+                        console.log(field[currentfield[0]][currentfield[1]])
+                        if (field[currentfield[0]][currentfield[1]] == w || field[currentfield[0]][currentfield[1]] == b) {
                             message.channel.send("No Valid Move")
                             return
                         }
-                        if (field[currentfield] == 2 || field[currentfield] == 12){
+                        if (field[currentfield[0]][currentfield[1]] == bp || field[currentfield[0]][currentfield[1]] == wp){
+                            message.channel.send("NO PAWNS ALLOWED YET");
                             //pawn time
                         }
                         else {
-                            field[futurefield] = field[currentfield]
+                            // zukunft = currentfield <pawn>
+                            field[futurefield[0]][futurefield[1]] = field[currentfield[0]][currentfield[1]];
                         }
                         message.channel.send(getFormatedField())
                     }
                 });
             } catch (err) {
-                console.log(err)
+                message.channel.send("Please only enter in this format <b1 b2>")
             }
         }
-
     }
 })
 
