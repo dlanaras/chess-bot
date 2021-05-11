@@ -32,6 +32,18 @@ let field = [
     [bp,bp,bp,bp,bp,bp,bp,bp],
     [br,bn,bb,bq,bk,bb,bn,br]
 ];
+
+const wab =  [
+    [w,b,w,b,w,b,w,b],
+    [b,w,b,w,b,w,b,w],
+    [w,b,w,b,w,b,w,b],
+    [b,w,b,w,b,w,b,w],
+    [w,b,w,b,w,b,w,b],
+    [b,w,b,w,b,w,b,w],    
+    [w,b,w,b,w,b,w,b],
+    [b,w,b,w,b,w,b,w]
+]
+
 //makes field
 function getFormatedField() {
     let formatedfield = "";
@@ -47,7 +59,7 @@ function getFormatedField() {
 }
 client.on("message", function (message) {
 
-    client.user.setActivity("with big pp", {
+    client.user.setActivity("with the one and only god Dimi", {
         type: "STREAMING",
         url: "https://github.com/YvesHuber/chess-bot"
     });
@@ -153,8 +165,7 @@ client.on("message", function (message) {
                         currentfield = fieldchooser(currentrow, currentnum)
                         futurefield = fieldchooser(futuretrow,futurenum)
                         console.log("current Index", currentfield , "future Index", futurefield)
-                        //console.log("currentfield Value" , field[currentfield],"futurefireld Value" ,field[futurefield])
-                        console.log(typeof(field[currentfield] , 8))
+                        console.log(typeof(field[currentfield]))
                         console.log(field[currentfield[0]][currentfield[1]])
                         if (field[currentfield[0]][currentfield[1]] == w || field[currentfield[0]][currentfield[1]] == b) {
                             message.channel.send("No Valid Move")
@@ -166,7 +177,14 @@ client.on("message", function (message) {
                         }
                         else {
                             // zukunft = currentfield <pawn>
+
                             field[futurefield[0]][futurefield[1]] = field[currentfield[0]][currentfield[1]];
+                            try {
+                                field[currentfield[0]][currentfield[1]] = wab[currentfield[0]+2][currentfield[1]];
+                            } catch (error) {
+                                field[currentfield[0]][currentfield[1]] = wab[currentfield[0]-2][currentfield[1]];
+                            }
+                            
                         }
                         message.channel.send(getFormatedField())
                     }
