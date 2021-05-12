@@ -20,7 +20,7 @@ const bn = "<:knightb:841224208587292713>";
 const wp = "<:pawnw:841224234508484608>";
 const bp = "<:pawnb:841224234289725470>";
 const w = ":white_large_square:";
-const b = ":black_large_square:";
+const b = "<:black:841686770893455390>";
 //Fields 
 let field = [
     [wr,wn,wb,wk,wq,wb,wn,wr],
@@ -179,12 +179,8 @@ client.on("message", function (message) {
                             // zukunft = currentfield <pawn>
 
                             field[futurefield[0]][futurefield[1]] = field[currentfield[0]][currentfield[1]];
-                            try {
-                                field[currentfield[0]][currentfield[1]] = wab[currentfield[0]+2][currentfield[1]];
-                            } catch (error) {
-                                field[currentfield[0]][currentfield[1]] = wab[currentfield[0]-2][currentfield[1]];
-                            }
-                            
+                            field[currentfield[0]][currentfield[1]] = wab[currentfield[0]][currentfield[1]]
+
                         }
                         message.channel.send(getFormatedField())
                     }
