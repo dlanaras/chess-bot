@@ -1,4 +1,4 @@
-class Pog { 
+
 Discord = require("discord.js");
 config = require("./config.json");
 client = new Discord.Client();
@@ -7,7 +7,6 @@ fs = require('fs')
 https = require('https');
 readline = require('readline');
 prefix = "!";
-}
 //Figures
 const wk = "<:kingw:841224208972513320>";
 const bk = "<:kingb:841224209086152704>";
@@ -31,8 +30,8 @@ let field = [
     [b, w, b, w, b, w, b, w],
     [w, b, w, b, w, b, w, b],
     [b, w, b, w, b, w, b, w],
-    [bp, bp, bp, bp, bp, bp, bp, bp],
-    [br, bn, bb, bq, bk, bb, bn, br]
+    [bp, bp, bp, bn, bp, bp, bp, bp],
+    [br, bn, bb, bq, bk, bb, bn, br] //TODO: REVERSE
 ];
 
 const wab = [
@@ -47,7 +46,7 @@ const wab = [
 ]
 
 const blackPawns = [
-    bp, br, bn, bb, bq, bk
+    bn, bp, br, bb, bq, bk
 ]
 
 const whitePawns = [
@@ -193,10 +192,21 @@ client.on("message", function (message) {
                         
                                                 }*/
 
-                        //FUNKTIONS FOR FIGURE
-                        pawn(field, currentfield, futurefield, message);
-                        knight(field, currentfield, futurefield, message);
-                        message.channel.send(getFormatedField())
+                        //FUNCTIONS FOR PAWNS
+                        switch (field[currentfield[0]][currentfield[1]]) {
+                        case wp: 
+                        console.log("Pawn selected");
+                            pawn(field, currentfield, futurefield, message);
+                            message.channel.send(getFormatedField());
+                        break;
+                        case bn:
+                            console.log("KNIGHT SELECTED");
+                            knight(field, currentfield, futurefield, message);
+                            console.log("went through function");
+
+                        break;
+                            //message.channel.send(getFormatedField())
+                        }
                     }
                 });
             } catch (err) {
@@ -260,6 +270,7 @@ function pawn(field, currentfield, futurefield, message) {
             field[currentfield[0]][currentfield[1]] = wab[currentfield[0]][currentfield[1]];
         }
 
+
         if (hasMoved == true) {
             if (currentfield[0] - futurefield[0] == 1) {
                 if (field[futurefield[0]][futurefield[1]] == w || field[futurefield[0]][futurefield[1]] == b) {
@@ -315,7 +326,7 @@ function knight(field, currentfield, futurefield, message) {
             if (futurefield[1] - currentfield[1] == 1 || currentfield[1] - futurefield[1] == 1) {
                 console.log("LINE 312");
                 canibalism(field, currentfield, futurefield, message);
-                field[currentfield[0]][currentfield[1]] = wab[currentfield[0]][currentfield[1]];
+
             }else {
                 message.channel.send('SCUMBAG GO DO RIGHT TURN L IDIOT')
             }
@@ -324,7 +335,7 @@ function knight(field, currentfield, futurefield, message) {
         if (futurefield[0] - currentfield[0] == 1 || currentfield[0] - futurefield[0] == 1) {
             console.log("LINE 321");
             canibalism(field, currentfield, futurefield, message);
-            field[currentfield[0]][currentfield[1]] = wab[currentfield[0]][currentfield[1]]
+
         } else {
             console.log('')
             // KNIGHT GOES 2 front or back then one left or right idiot @alex
@@ -340,10 +351,14 @@ function canibalism(field, currentfield, futurefield, message) {
     let detected = false;
 
 
-    blackPawns.forEach(element => {
+    for(let element of blackPawns) {
+        console.log("asfasdfasdfasdasdasd");
+        console.log(element, "-elemnt and ", field[currentfield[0]][currentfield[1]])
         if (field[currentfield[0]][currentfield[1]] == element) {
             black = true;
+            console.log("it is the black")
             for(let thing of blackPawns) {
+                console.log(thing + " COMPARET TO FIELD: " + field[futurefield[0]][futurefield[1]]);
             if (field[futurefield[0]][futurefield[1]] == thing) {
                 message.channel.send("NO CANIBALISM ALLOWED HERE (black pawns)");
                 detected = true;
@@ -351,10 +366,10 @@ function canibalism(field, currentfield, futurefield, message) {
             } 
         }
     }
-    console.log("first");
-    });
+}
 
-if (black !== true){
+
+if (black == false){
     white = true;
     console.log("second");
 }
@@ -367,9 +382,14 @@ if (black !== true){
                 break;
             } 
         }
+        console.log("THIS IS DETECTED: ", detected);
         if (detected == false) {
             console.log("worked white");
             field[futurefield[0]][futurefield[1]] = field[currentfield[0]][currentfield[1]]
+            message.channel.send("POGGERS");
+            field[currentfield[0]][currentfield[1]] = wab[currentfield[0]][currentfield[1]]
+            message.channel.send("VANISHED");
+            message.channel.send(getFormatedField());
         }
     }
 }
