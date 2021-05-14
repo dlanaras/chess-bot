@@ -1,11 +1,13 @@
-const Discord = require("discord.js");
-const config = require("./config.json");
-const client = new Discord.Client();
-const tmi = require('tmi.js');
-const fs = require('fs')
-const https = require('https');
-const readline = require('readline');
-const prefix = "!";
+class Pog { 
+Discord = require("discord.js");
+config = require("./config.json");
+client = new Discord.Client();
+tmi = require('tmi.js');
+fs = require('fs')
+https = require('https');
+readline = require('readline');
+prefix = "!";
+}
 //Figures
 const wk = "<:kingw:841224208972513320>";
 const bk = "<:kingb:841224209086152704>";
@@ -304,6 +306,8 @@ function rook(field, currentfield, futurefield, message) {
 function queen(field, currentfield, futurefield, message) {
 
 }
+
+
 function knight(field, currentfield, futurefield, message) {
     if (field[currentfield[0]][currentfield[1]] == wn || field[currentfield[0]][currentfield[1]] == bn) {
         if (futurefield[0] - currentfield[0] == 2 || currentfield[0] - futurefield[0] == 2) {
